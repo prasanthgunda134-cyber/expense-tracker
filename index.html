@@ -1,1 +1,29 @@
-<!DOCTYPE html><html><head><title>My Expense Tracker</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial;padding:20px;background:#f0f0f0}.box{background:white;padding:20px;border-radius:12px}input,button{padding:12px;margin:6px 0;width:94%;font-size:16px}button{background:#2ecc71;color:white;border:none;border-radius:6px;font-weight:bold}.item{background:#f5f5f5;padding:10px;margin:8px 0;border-radius:6px;display:flex;justify-content:space-between}</style></head><body><div class="box"><h2>💰 My Expense Tracker</h2><input id="item" placeholder="Enti konnav?"><input id="price" type="number" placeholder="Enta?"><button onclick="addExpense()">Add Chey</button><h3>Total: Rs.<span id="total">0</span></h3><div id="list"></div></div><script>let expenses=JSON.parse(localStorage.getItem("myExpenses"))||[];showList();function addExpense(){let item=document.getElementById("item").value;let price=Number(document.getElementById("price").value);if(!item||!price)return alert("Details ivvu!");expenses.push({item,price});localStorage.setItem("myExpenses",JSON.stringify(expenses));document.getElementById("item").value="";document.getElementById("price").value="";showList();}function showList(){let list=document.getElementById("list");let total=0;list.innerHTML="";expenses.forEach(e=>{total+=e.price;list.innerHTML+=`<div class='item'><span>${e.item}</span><b>Rs.${e.price}</b></div>`});document.getElementById("total").innerText=total;}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Pro Expense Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:Arial;padding:15px;background:#eef2f7;margin:0}
+.box{background:white;padding:20px;border-radius:16px;max-width:400px;margin:auto;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+h2{text-align:center}
+input,button{padding:13px;margin:6px 0;width:92%;font-size:16px;border-radius:8px;border:1px solid #ccc}
+button{background:#2ecc71;color:white;border:none;font-weight:bold;cursor:pointer;width:100%}
+.item{background:#f8f9fa;padding:12px;margin:8px 0;border-radius:8px;display:flex;justify-content:space-between;align-items:center}
+.del{background:#ff4757;padding:6px 10px;border-radius:5px;width:auto;margin:0}
+#chartBox{margin-top:20px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>💰 Pro Expense Tracker</h2>
+<input id="item" placeholder="Enti konnav? Ex: Biryani">
+<input id="price" type="number" placeholder="Enta? Ex: 250">
+<button onclick="addExpense()">➕ Add Chey</button>
+<h3>Total: Rs.<span id="total">0</span></h3>
+<div id="list"></div>
+<div id="chartBox"><canvas id="myChart"></canvas></div>
+</div>
+<script>
+let expenses=JSON.parse(localStorage.getItem("myExpensesPro
