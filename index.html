@@ -18,12 +18,47 @@ button{background:#2ecc71;color:white;border:none;font-weight:bold;cursor:pointe
 <body>
 <div class="box">
 <h2>💰 Pro Expense Tracker</h2>
-<input id="item" placeholder="Enti konnav? Ex: Biryani">
-<input id="price" type="number" placeholder="Enta? Ex: 250">
+<input id="item" placeholder="Enti konnav?">
+<input id="price" type="number" placeholder="Enta?">
 <button onclick="addExpense()">➕ Add Chey</button>
 <h3>Total: Rs.<span id="total">0</span></h3>
 <div id="list"></div>
-<div id="chartBox"><canvas id="myChart"></canvas></div>
+<div style="margin-top:20px"><canvas id="myChart"></canvas></div>
 </div>
 <script>
-let expenses=JSON.parse(localStorage.getItem("myExpensesPro
+let expenses=JSON.parse(localStorage.getItem("myExpensesPro"))||[];
+let chart;
+showList();
+function addExpense(){
+ let item=document.getElementById("item").value;
+ let price=Number(document.getElementById("price").value);
+ if(!item||!price)return alert("Details ivvu!");
+ expenses.push({item,price});
+ localStorage.setItem("myExpensesPro",JSON.stringify(expenses));
+ document.getElementById("item").value="";
+ document.getElementById("price").value="";
+ showList();
+}
+function deleteExp(i){
+ expenses.splice(i,1);
+ localStorage.setItem("myExpensesPro",JSON.stringify(expenses));
+ showList();
+}
+function showList(){
+ let list=document.getElementById("list");
+ let total=0;list.innerHTML="";
+ expenses.forEach((e,i)=>{
+  total+=e.price;
+  list.innerHTML+=`<div class='item'><span>${e.item}</span><span><b>Rs.${e.price}</b> <button class='del' onclick='deleteExp(${i})'>X</button></span></div>`;
+ });
+ document.getElementById("total").innerText=total;
+ updateChart();
+}
+function updateChart(){
+ let ctx=document.getElementById('myChart');
+ if(chart)chart.destroy();
+ chart=new Chart(ctx,{type:'doughnut',data:{labels:expenses.map(e=>e.item),datasets:[{data:expenses.map(e=>e.price)}]}});
+}
+</script>
+</body>
+</html>
